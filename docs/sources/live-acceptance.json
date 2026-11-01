@@ -1,0 +1,37 @@
+{
+  "testedAt": "2026-10-31T06:04:04.403Z",
+  "round": {
+    "id": "stream-game-sepolia-test-20261025-01:1793426400000",
+    "starts_at": 1793426400000,
+    "ends_at": 1793426520000,
+    "locks_at": 1793426400000,
+    "thresholds": {
+      "low": "0",
+      "high": "124",
+      "samples": 240
+    },
+    "installation": "stream-game-sepolia-test-20261025-01",
+    "status": "settled",
+    "work": "0",
+    "outcome": "cozy",
+    "evidence": {
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "source": "https://api.squeekchain.com/v1/measurement/runs",
+      "interval": "[start,end)",
+      "authority": "pi-device-key",
+      "segmentIds": [],
+      "retrievedAt": 1793426641589,
+      "installation": "stream-game-sepolia-test-20261025-01",
+      "rulesVersion": "passages-v1",
+      "certifiedCoreWork": false,
+      "coverageThroughAt": 1793426632872
+    },
+    "settled_at": 1793426641589
+  },
+  "prediction": {
+    "choice": "cozy",
+    "points": 100,
+    "correct": true
+  },
+  "profilePoints": 125
+}

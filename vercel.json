@@ -1,0 +1,5 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "functions": { "src/app/api/sync/route.ts": { "maxDuration": 60 } }
+}

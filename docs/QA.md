@@ -1,0 +1,64 @@
+# QA record — 2026-10-31
+
+## Automated coverage
+
+Vitest runs actual PostgreSQL through PGlite for persistence/integration tests, using isolated random directories under `.data/tests-*`. Synthetic records exist only in those tests. Real API snapshots in `docs/sources` are separate from synthetic fixtures and are never served as fallback live outcomes.
+
+Coverage includes correct/incorrect prediction scoring, third-win bonuses, duplicate rejection, exact lock/late timestamp rejection, future window lead time, historical calibration, complete/incomplete interval counting, non-hardware/discontinuous/overlapping evidence rejection, unknown schema versions, malformed historical arrays, huge integer formatting, ETag 304 handling, HTTP-200 unavailable data, HTTP 429 backoff, session hash storage, forged sessions, real database prediction uniqueness, idempotent settlement, incomplete-round withholding, leaderboard order, daily single awards and disputed-score exclusion. Diagnostic tests parse all seven actual endpoint snapshots and prove the observed deployment identity mismatch is rejected.
+
+Playwright checks original UI rendering, profile/avatar creation, HttpOnly/SameSite cookies, all seven routes, desktop and 390px mobile layouts, absence of horizontal overflow, mobile navigation, browser errors, missing-session/forged-score rejection, wrong-Origin rejection and protected scheduler access. Screenshots are saved in `docs/screenshots`.
+
+The opt-in live test uses actual current official API data and real time. It registers a clearly named QA profile, locks one future prediction, rejects a duplicate, plays the actual daily challenge, waits for delayed hardware evidence, checks the award and idempotency, and opens the retained timeline replay. It never changes server time or supplies synthetic outcomes. Its observed result is saved separately as `docs/sources/live-acceptance.json` when successful.
+
+## Commands
+
+```sh
+npm run lint
+npx tsc --noEmit
+npm run test
+npm run build
+npm run test:e2e
+npm audit
+```
+
+## Issues found and fixed
+
+- Explicit CommonJS package mode conflicted with App Router ESM modules. Switched to ESM.
+- Development Origin validation used Next's normalized URL rather than the actual local host. Development now checks the request Host; production requires exact configured `APP_ORIGIN`.
+- Mobile hero decoration caused a small horizontal overflow. Repositioned it; verified at 390px.
+- Sprint racer briefly started at an uninitialized position during first animation. Disabled initial interpolation and moved the starting grid inside the track.
+- Dialog focus handling reacted to every parent clock render. Kept a stable focus trap and a separate current close callback.
+- Day-crossing daily dialogs could answer a different day's challenge. The client now submits the displayed day and the server rejects mismatches.
+- Prediction timestamps now use the same server timestamp for the final lock check and stored acceptance record, after transactional feed checks.
+- Detected source corrections now persist a halt and dispute ranked results instead of merely returning a temporary error.
+- Raw database exceptions are not returned to browsers; public errors are allowlisted.
+- Turbopack production CSS worker failed on this Windows environment. Supported Webpack production build succeeds; separate production output prevents dev/build collisions.
+- npm audit identified a moderate development-only minimatch amplification advisory. Pinned patched minimatch 11 through npm overrides; rerun lint and tests to validate the transitive-tool compatibility. Production audit had no findings before this remediation; full audit reports zero after it.
+
+## Verification limits
+
+No production cloud PostgreSQL account, public hosting, load test, independent hardware signature verification, wallet authentication or chain-certified mode was exercised. No Ethereum transaction exists to verify. Anonymous anti-Sybil limitations and historical correction detection limits are documented. The on-chain deployment mismatch remains unresolved; the app deliberately uses separately labeled hardware API evidence. IMD ownership/payment and Genesis approval cannot be produced by local QA.
+
+## Final results
+
+| Check | Observed result |
+|---|---|
+| `npm run lint` | Pass, no warnings/errors |
+| `npx tsc --noEmit` | Pass, strict mode |
+| `npm run test` | 29 tests pass across four files |
+| `npm run build` | Pass, Next.js 16.4.3 production Webpack build |
+| Standard Playwright acceptance | 2 tests pass, desktop/mobile and API security checks |
+| Opt-in actual-hardware acceptance | 1 test passes after approximately 4.4 minutes of real waiting |
+| `npm audit` | Zero vulnerabilities after patched minimatch override |
+| Built-server smoke test | Homepage 200, actual hardware API available, profile 200 with Secure/HttpOnly/SameSite cookie; isolated local database |
+| Git preparation | Local `main` repository initialized; no commit, remote or push |
+
+### Actual hardware observation
+
+Test completed at 2026-10-31 13:04:04 Asia/Saigon (06:04:04 UTC). Future game interval: 13:00–13:02 local / 06:00–06:02 UTC. The server had locked the QA player's Cozy prediction before the start. Frozen ranges were 0, 1–124, and 125+ accepted passages, calibrated from 240 prior eligible windows.
+
+The wheel was resting. Full API coverage reported zero accepted passages for that interval, so the correct future prediction earned 100 points. The actual daily historical challenge added 25 participation points. Repeated synchronization kept the profile at 125 points; the duplicate submission was rejected. The test opened History → Details and the retained replay successfully.
+
+Evidence: `docs/sources/live-acceptance.json` and `docs/screenshots/verified-replay.png`. The result explicitly has `certifiedCoreWork: false`; it proves this application's accepted-API measurement workflow, not independent device signatures or on-chain settlement. Empty passage evidence for this resting interval is backed by the retained coverage watermark, not a claim that missing evidence equals zero. Local QA profiles visible in screenshots earned actual game awards; no fictional competitors were seeded.
+
+Desktop and mobile screenshots were visually inspected after the final acceptance run. The mobile page has no horizontal overflow at 390px, and live source values, calibrated prediction ranges and actual QA leaderboard records are visible. No external deployment or badge submission took place.

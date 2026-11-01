@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "skills": {
+    "squeekchain": {
+      "source": "docs.squeekchain.com",
+      "sourceUrl": "https://docs.squeekchain.com",
+      "sourceType": "well-known",
+      "computedHash": "3cd658d71ed90037dfc85e29d422043a35893b1af1887e39f347b0377b2c05c0",
+      "wellKnownDigest": "sha256:66644a127cc402f791d2cc76e89959670ffb689eea840ec3f74a57b467f2582b"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.next-production/
+.data/
+.env*
+!.env.example
+playwright-report/
+test-results/
+*.tsbuildinfo
+.agents/
+docs/sources/*.html
+docs/sources/*.js
+docs/sources/*.md
+docs/sources/*.txt
