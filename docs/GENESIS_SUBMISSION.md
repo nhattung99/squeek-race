@@ -8,6 +8,8 @@
 
 **Description:** An original free browser game turning accepted real-world wheel passages into future interval predictions, a personal hamster sprint and daily historical learning challenges. Server profiles, immutable predictions, evidence replay and a PostgreSQL-backed community leaderboard make the game playable beyond a dashboard.
 
+**Main race update:** Squeek Grand Prix adds three-second starts, one human against two labeled AI opponents, lane steering, obstacles, boost, finish classification and persisted server-authoritative race receipts. Wheel status at creation modifies energy regeneration. These are virtual races, not human multiplayer or independently measured physical competition; race standings remain separate from prediction accuracy.
+
 **Public demo URL:** `<PUBLIC_DEMO_URL_PENDING_OWNER_APPROVAL>`
 
 **GitHub URL:** https://github.com/nhattung99/squeek-race

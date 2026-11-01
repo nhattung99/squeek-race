@@ -10,7 +10,7 @@ test("desktop, profile, daily play, navigation and mobile layout", async ({
     page.getByRole("heading", { name: /Little paws/ }),
   ).toBeVisible();
   await expect(
-    page.getByRole("heading", { name: "Hamster Sprint" }),
+    page.getByRole("heading", { name: "Squeek Grand Prix" }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Join the arena" }).click();
   const nickname = `QA${Date.now().toString().slice(-8)}`;

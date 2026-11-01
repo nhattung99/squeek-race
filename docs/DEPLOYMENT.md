@@ -1,6 +1,17 @@
 # Deployment guide
 
-No public deployment, GitHub push, paid service or database was created. Ask the project owner before doing any of those actions. The repository is prepared for Next.js on Vercel with external PostgreSQL.
+Source publication to https://github.com/nhattung99/squeek-race is authorized by the owner. No public deployment, paid service or cloud database has been created by this agent. The repository is prepared for Next.js on Vercel with external PostgreSQL.
+
+## Vercel dashboard quickstart
+
+1. Import `nhattung99/squeek-race` from GitHub, branch `main`, root directory `./`, framework **Next.js**. Keep the repository's `npm run build` command and automatic output detection; do not set a static export or IPFS output.
+2. Use Node.js **24.x** (also pinned in `package.json`).
+3. Connect a PostgreSQL provider through Vercel Marketplace, such as Neon or Supabase, after reviewing its current plan and costs. Configure its pooled connection string as server-only `DATABASE_URL`. Do not use the local `.data` database on Vercel.
+4. Set `APP_ORIGIN` to the actual canonical deployment origin, e.g. `https://YOUR-ACTUAL-DOMAIN.vercel.app`, without a trailing slash. It must not be localhost. If the URL is assigned only after the first deploy, set this variable once known and redeploy before testing profiles or races.
+5. Set a random `CRON_SECRET` of at least 32 characters and initially `TRUST_PROXY=false`. Never prefix database credentials or scheduler secrets with `NEXT_PUBLIC_`. The current configuration does not activate a paid scheduler.
+6. Deploy, then test creating a racer, starting a Grand Prix, finishing, and reloading to confirm the result persists. Check Function logs for database failures without sharing secret values. Cloud PostgreSQL and Vercel execution still require this real deployment acceptance test.
+
+References: https://vercel.com/docs/marketplace-storage, https://vercel.com/docs/environment-variables, https://vercel.com/docs/functions/runtimes/node-js/node-js-versions.
 
 ## Local development
 

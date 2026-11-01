@@ -32,6 +32,8 @@ import {
 import { Button } from "./ui/button";
 import { Hamster } from "./hamster";
 import { RoundReplay } from "./round-replay";
+import { PracticeRace } from "./practice-race";
+import { MatchRace } from "./match-race";
 import { integer, milli } from "@/lib/utils";
 import type { gameState } from "@/lib/game";
 import type { Choice, Thresholds } from "@/lib/rules";
@@ -367,100 +369,117 @@ export function ArenaApp({ page }: { page: string }) {
     </section>
   );
   const sprintPanel = (
-    <section className="panel sprint-panel">
-      <div className="section-heading">
-        <div>
-          <span className="eyebrow">REAL PAWS. REAL PROGRESS.</span>
-          <h2>
-            Hamster Sprint <Flag size={19} />
-          </h2>
-        </div>
-        <span className={`pill ${fresh ? "cyan" : "neutral"}`}>
-          <span className="dot" />
-          {fresh ? "HARDWARE FEED" : "FEED UNAVAILABLE"}
-        </span>
-      </div>
-      <div className="sprint-stage">
-        <div className="stage-grid" />
-        <div className="arena-moon" />
-        <div className="arena-label">
-          SQUEEK CIRCUIT <span>01</span>
-        </div>
-        <div className="grandstand grandstand-one" />
-        <div className="grandstand grandstand-two" />
-        <div className="speed-lines">
-          <i />
-          <i />
-          <i />
-        </div>
-        <div className="track">
-          <div className="track-inner" />
-          <div className="track-dash" />
-        </div>
-        <div className="finish-flag">
-          <Flag size={24} />
-          <span>60</span>
-        </div>
-        <motion.div
-          className="racer"
-          initial={false}
-          animate={{ left: `${23 + progress * 0.47}%` }}
-          transition={{ duration: 1.4, ease: "easeOut" }}
-        >
-          <span className="racer-name">
-            {state?.player?.nickname ?? "YOUR RACER"}
-          </span>
-          <Hamster
-            color={
-              ["orange", "violet", "cyan", "pink"][state?.player?.avatar ?? 0]
-            }
-          />
-          <div className="racer-shadow" />
-        </motion.div>
-        <div className="track-bottom">
-          <span>
-            <span className="dot" />{" "}
-            {fresh
-              ? measurement?.coreStatus === "ACTIVE"
-                ? "WHEEL ACTIVE"
-                : "SQUEEKTOSHI IS RESTING"
-              : "WAITING FOR HARDWARE"}
-          </span>
-          <span>
-            {sprint
-              ? `${sprintWork > 0n ? sprintWork.toString() : 0} / 60 passages`
-              : "READY WHEN YOU ARE"}
-          </span>
-        </div>
-        {progress >= 100 && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="finish-message"
-          >
-            <Trophy /> PAWSOME FINISH!
-          </motion.div>
-        )}
-      </div>
-      <div className="sprint-controls">
-        <div>
-          <strong>
-            {sprint
-              ? `${progress}% of your sprint`
-              : "One real wheel. Your own little race."}
-          </strong>
-          <small>
-            {sprint && !sprintValid
-              ? "Feed paused or counter changed. Restart when fresh."
-              : "Visualizes accepted hardware passages. Sprint awards no ranked points."}
-          </small>
-        </div>
-        <Button variant="outline" onClick={startSprint} disabled={!fresh}>
-          {sprint ? <RotateCcw size={15} /> : <Flag size={15} />}{" "}
-          {sprint ? "Restart" : "Start sprint"}
-        </Button>
-      </div>
-    </section>
+    <>
+      <MatchRace
+        player={state?.player ?? null}
+        onJoin={() => setProfileOpen(true)}
+      />
+      <details className="live-companion">
+        <summary>Đua tập ngoại tuyến · không lưu thành tích</summary>
+        <PracticeRace />
+      </details>
+      <details className="live-companion">
+        <summary>
+          Theo dõi bánh xe thật · chỉ chạy khi hamster hoạt động
+        </summary>
+        <section className="panel sprint-panel">
+          <div className="section-heading">
+            <div>
+              <span className="eyebrow">REAL PAWS. REAL PROGRESS.</span>
+              <h2>
+                Live Wheel Companion <Flag size={19} />
+              </h2>
+            </div>
+            <span className={`pill ${fresh ? "cyan" : "neutral"}`}>
+              <span className="dot" />
+              {fresh ? "HARDWARE FEED" : "FEED UNAVAILABLE"}
+            </span>
+          </div>
+          <div className="sprint-stage">
+            <div className="stage-grid" />
+            <div className="arena-moon" />
+            <div className="arena-label">
+              SQUEEK CIRCUIT <span>01</span>
+            </div>
+            <div className="grandstand grandstand-one" />
+            <div className="grandstand grandstand-two" />
+            <div className="speed-lines">
+              <i />
+              <i />
+              <i />
+            </div>
+            <div className="track">
+              <div className="track-inner" />
+              <div className="track-dash" />
+            </div>
+            <div className="finish-flag">
+              <Flag size={24} />
+              <span>60</span>
+            </div>
+            <motion.div
+              className="racer"
+              initial={false}
+              animate={{ left: `${23 + progress * 0.47}%` }}
+              transition={{ duration: 1.4, ease: "easeOut" }}
+            >
+              <span className="racer-name">
+                {state?.player?.nickname ?? "YOUR RACER"}
+              </span>
+              <Hamster
+                color={
+                  ["orange", "violet", "cyan", "pink"][
+                    state?.player?.avatar ?? 0
+                  ]
+                }
+              />
+              <div className="racer-shadow" />
+            </motion.div>
+            <div className="track-bottom">
+              <span>
+                <span className="dot" />{" "}
+                {fresh
+                  ? measurement?.coreStatus === "ACTIVE"
+                    ? "WHEEL ACTIVE"
+                    : "SQUEEKTOSHI IS RESTING"
+                  : "WAITING FOR HARDWARE"}
+              </span>
+              <span>
+                {sprint
+                  ? `${sprintWork > 0n ? sprintWork.toString() : 0} / 60 passages`
+                  : "READY WHEN YOU ARE"}
+              </span>
+            </div>
+            {progress >= 100 && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="finish-message"
+              >
+                <Trophy /> PAWSOME FINISH!
+              </motion.div>
+            )}
+          </div>
+          <div className="sprint-controls">
+            <div>
+              <strong>
+                {sprint
+                  ? `${progress}% of your sprint`
+                  : "One real wheel. Your own little race."}
+              </strong>
+              <small>
+                {sprint && !sprintValid
+                  ? "Feed paused or counter changed. Restart when fresh."
+                  : "Visualizes accepted hardware passages. Sprint awards no ranked points."}
+              </small>
+            </div>
+            <Button variant="outline" onClick={startSprint} disabled={!fresh}>
+              {sprint ? <RotateCcw size={15} /> : <Flag size={15} />}{" "}
+              {sprint ? "Restart" : "Start sprint"}
+            </Button>
+          </div>
+        </section>
+      </details>
+    </>
   );
   const leaderboardPanel = (
     <section className="panel leaderboard-panel">
@@ -706,9 +725,8 @@ export function ArenaApp({ page }: { page: string }) {
                 </p>
                 <div className="hero-buttons">
                   <Button asChild>
-                    <a href="#prediction">
-                      <Flag size={17} /> Enter the arena{" "}
-                      <ArrowRight size={17} />
+                    <a href="#play">
+                      <Flag size={17} /> Chơi đua ngay <ArrowRight size={17} />
                     </a>
                   </Button>
                   <Button asChild variant="ghost">
@@ -938,6 +956,20 @@ export function ArenaApp({ page }: { page: string }) {
               text="One real hamster. Three ways to play. Absolutely no money on the line."
             />
             <div className="guide-grid">
+              <section className="panel guide-card">
+                <span>GP</span>
+                <Flag size={26} />
+                <h2>Đua chính · Grand Prix</h2>
+                <p>
+                  Tạo hồ sơ rồi bấm Bắt đầu trận đấu. Đếm ngược 3 giây, đua với
+                  2 AI, dùng ← → hoặc A/D để né thùng và Space để tăng tốc.
+                  Server tính vị trí, thời gian về đích và lưu thứ hạng. Đây là
+                  mét ảo trong game; chưa phải multiplayer người thật.
+                </p>
+                <Link className="text-link" href="/arena#play">
+                  Vào trận đấu <ArrowRight size={14} />
+                </Link>
+              </section>
               {[
                 {
                   n: "01",

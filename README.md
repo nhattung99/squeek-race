@@ -19,6 +19,10 @@ The app synchronizes official hardware history in batches (six pages, at least 5
 
 ## Play
 
+**Main race — Squeek Grand Prix:** at `/#play`, create a profile and start a server match against two labeled AI racers. Three-second countdown, lane steering, obstacles, energy, boost, finish times and final ranking are calculated by the server. Results persist through refresh and appear on a separate racing board. Use Left/Right or A/D and Space, or touch controls. See [server racing rules](docs/RACING.md). This is AI competition, not human multiplayer.
+
+**Arcade Sprint practice:** play immediately with a countdown, three lanes, obstacles, energy pickups and boost. Use Left/Right or A/D to steer and Space to boost, or the mobile buttons. This simulated practice race works while the real hamster rests. It awards no leaderboard points and does not alter verified prediction results.
+
 1. Choose a hamster avatar and nickname. The server issues an HttpOnly anonymous session cookie.
 2. **Predict the Wheel:** pick zero, moderate, or high accepted passages in a future two-minute window. Ranges freeze from prior hardware measurements. Lock before the start.
 3. **Hamster Sprint:** start a visual race to 60 new accepted passages. Wheel rests pause progress. This mode awards no ranked points.
@@ -83,7 +87,7 @@ The production build uses Next.js's supported Webpack option because this Window
 
 Read [deployment](docs/DEPLOYMENT.md), [architecture](docs/ARCHITECTURE.md), [rules](docs/GAME_RULES.md), [API integration](docs/API_INTEGRATION.md), [demo](docs/DEMO.md), [QA](docs/QA.md) and [Genesis submission](docs/GENESIS_SUBMISSION.md).
 
-This version was developed in Codex. **Codex code alone does not establish IMD attribution.** No IMD job, payment, owner wallet, badge approval, public deployment or GitHub push has been created. The official skill installed successfully under `.agents/skills/squeekchain`; it is excluded from source publication because its documentation is proprietary. Its guidance was read during this session; a new Codex turn can discover the installed skill.
+This version was developed in Codex. **Codex code alone does not establish IMD attribution.** Source publication to [the owner's GitHub repository](https://github.com/nhattung99/squeek-race) is authorized. No IMD job, payment, verified job-owner attribution, badge approval or public deployment has been created by this agent. The official skill installed successfully under `.agents/skills/squeekchain`; it is excluded from source publication because its documentation is proprietary. Its guidance was read during this session; a new Codex turn can discover the installed skill.
 
 ## Official sources
 

@@ -2801,3 +2801,424 @@ footer a:hover {
 .celebration i:nth-child(3n + 1) {
   background: #ffad70;
 }
+.practice-panel {
+  order: 0 !important;
+}
+.practice-description {
+  font-size: 12px;
+  color: #a5b0c9;
+  margin: 15px 0;
+}
+.practice-hud {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #c1b0f0;
+  font-size: 12px;
+  margin: 13px 0;
+}
+.practice-hud span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.practice-road {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+  border: 1px solid #67518b;
+  border-radius: 12px;
+  background: linear-gradient(#171a35, #302547);
+  isolation: isolate;
+}
+.practice-lane-lines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 32.9%,
+    #ac93d84d 33%,
+    #ac93d84d 33.4%,
+    transparent 33.5%,
+    transparent 66.2%,
+    #ac93d84d 66.3%,
+    #ac93d84d 66.7%,
+    transparent 66.8%
+  );
+}
+.practice-road.boosting {
+  box-shadow: inset 0 0 40px #76e9e33b;
+  border-color: #7be4d8;
+}
+.practice-hamster {
+  position: absolute;
+  width: 82px;
+  bottom: 20px;
+  transform: translateX(-50%);
+  transition: left 0.14s;
+  z-index: 2;
+}
+.practice-item {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+}
+.practice-item.obstacle {
+  color: #ffc69a;
+  background: #8a533c;
+  border: 2px solid #eaa46e;
+  font-size: 30px;
+}
+.practice-item.energy {
+  color: #88f2de;
+  background: #35706855;
+  border: 1px solid #8bf2dd;
+}
+.practice-overlay {
+  position: absolute;
+  inset: 0;
+  background: #0b1024c9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 17px;
+  z-index: 4;
+  text-align: center;
+  padding: 15px;
+}
+.practice-overlay strong {
+  font-size: 25px;
+  color: #d1baff;
+}
+.practice-overlay span {
+  font-size: 11px;
+  color: #a7b6cd;
+}
+.practice-overlay .practice-countdown {
+  font-size: 70px;
+}
+.practice-finish {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 10px;
+  color: #ac9ec9;
+}
+.practice-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+}
+.practice-controls .button {
+  min-height: 46px;
+  flex: 1;
+  touch-action: manipulation;
+}
+.practice-reset {
+  display: block;
+  background: transparent;
+  border: 0;
+  margin-top: 12px;
+  cursor: pointer;
+}
+.practice-panel .fine-print {
+  line-height: 1.7;
+}
+.practice-lane-lines {
+  background:
+    repeating-linear-gradient(
+        to bottom,
+        #cab5ff88 0 22px,
+        transparent 22px 42px
+      )
+      33.33% 0/3px 42px repeat-y,
+    repeating-linear-gradient(
+        to bottom,
+        #cab5ff88 0 22px,
+        transparent 22px 42px
+      )
+      66.66% 0/3px 42px repeat-y,
+    repeating-linear-gradient(to bottom, #d3acff44 0 8px, transparent 8px 42px)
+      0 0/100% 42px repeat-y;
+}
+.practice-running-status {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  color: #a3eadb;
+  font-size: 9px;
+  letter-spacing: 0.6px;
+}
+.practice-progress {
+  display: block;
+  width: 100%;
+  height: 8px;
+  margin-top: 12px;
+  accent-color: #9ce4d5;
+}
+.practice-runner-body svg {
+  display: block;
+  width: 100%;
+}
+.live-companion {
+  order: 6;
+  margin-bottom: 22px;
+  border: 1px solid #31354b;
+  border-radius: 12px;
+  background: #111728;
+}
+.live-companion > summary {
+  cursor: pointer;
+  padding: 15px 18px;
+  font-size: 11px;
+  color: #a8b0c5;
+  line-height: 1.7;
+}
+.live-companion .panel {
+  margin-bottom: 0;
+  border: 0;
+  border-top: 1px solid #31354b;
+  border-radius: 0 0 12px 12px;
+}
+#play {
+  scroll-margin-top: 18px;
+}
+.match-panel {
+  order: 0 !important;
+}
+.match-source {
+  font-size: 10px;
+  color: #9ad6c7;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin: 12px 0;
+  padding: 8px;
+  background: #7be4d808;
+  border-radius: 6px;
+}
+.match-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11px;
+  padding: 12px 0;
+  color: #c6b7eb;
+}
+.match-hud > span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.match-grid-order {
+  display: grid;
+  gap: 14px;
+  padding: 15px 10px 20px;
+  background: #0b1122;
+  border: 1px solid #35304c;
+  border-radius: 10px;
+  margin: 0 0 16px;
+}
+.match-grid-order > div {
+  display: grid;
+  grid-template-columns: 125px 1fr 65px;
+  gap: 10px;
+  align-items: center;
+  font-size: 9px;
+  color: #aaa5c2;
+}
+.match-grid-order .your-position {
+  color: #a6f1dd;
+}
+.match-progress-rail {
+  position: relative;
+  height: 5px;
+  background: #39304d;
+  border-radius: 5px;
+}
+.match-progress-rail > span {
+  display: block;
+  height: 100%;
+  background: #a88ce4;
+  border-radius: 5px;
+  transition: width 0.23s linear;
+}
+.your-position .match-progress-rail > span {
+  background: #7be4d8;
+}
+.match-progress-rail > i {
+  position: absolute;
+  top: -15px;
+  width: 32px;
+  height: 32px;
+  transition: left 0.23s linear;
+}
+.match-progress-rail svg {
+  width: 32px;
+  height: 32px;
+}
+.match-road {
+  height: 335px;
+}
+.match-racer {
+  position: absolute;
+  width: 78px;
+  transition:
+    left 0.15s,
+    bottom 0.23s linear;
+  z-index: 3;
+}
+.match-racer > span {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 7px;
+  white-space: nowrap;
+  padding: 2px 5px;
+  background: #15182c;
+  border: 1px solid #8f74bd;
+  border-radius: 4px;
+  color: #dfc5ff;
+}
+.match-racer svg {
+  width: 100%;
+  display: block;
+}
+.match-racer.opponent {
+  width: 61px;
+  z-index: 2;
+  opacity: 0.9;
+}
+.match-racer.human {
+  filter: drop-shadow(0 0 7px #76e4cf66);
+}
+.match-racer.human > span {
+  color: #b4ffe8;
+  border-color: #7be4d8;
+}
+.match-result {
+  margin-top: 18px;
+  padding: 15px;
+  border: 1px solid #648e79;
+  border-radius: 10px;
+  background: #17372f22;
+}
+.match-result h3,
+.match-board h3 {
+  font-size: 14px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 13px;
+  color: #a7e7d4;
+}
+.match-result > div,
+.match-board > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #354044;
+  font-size: 11px;
+}
+.match-result span {
+  color: #aaaac0;
+}
+.match-result details {
+  font-size: 10px;
+  margin-top: 15px;
+}
+.match-result summary {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+.match-result details p {
+  font-size: 9px;
+  color: #8b9ab5;
+  word-break: break-all;
+  margin-top: 10px;
+}
+.match-board {
+  margin-top: 20px;
+  padding-top: 17px;
+  border-top: 1px solid #31364b;
+}
+.match-board p {
+  color: #8794b1;
+  font-size: 11px;
+}
+.match-board strong {
+  color: #c8b2f4;
+  font-size: 10px;
+}
+.match-error {
+  margin-top: 12px;
+  padding: 12px;
+  color: #f8bb9b;
+  font-size: 11px;
+  border: 1px solid #835344;
+  border-radius: 8px;
+}
+.match-error button {
+  display: block;
+  margin-top: 8px;
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  color: #d8c3f2;
+  cursor: pointer;
+}
+.match-panel .practice-overlay > span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.match-panel .practice-description strong {
+  color: #dfd0ff;
+}
+@media (max-width: 520px) {
+  .match-grid-order > div {
+    grid-template-columns: 98px 1fr 45px;
+    gap: 7px;
+    font-size: 8px;
+  }
+  .match-grid-order small {
+    font-size: 8px;
+  }
+  .match-hud {
+    font-size: 9px;
+    gap: 7px;
+  }
+  .match-racer {
+    width: 68px;
+  }
+  .match-racer.opponent {
+    width: 53px;
+  }
+  .match-result > div {
+    font-size: 10px;
+  }
+  .match-board > div {
+    font-size: 9px;
+  }
+  .match-road {
+    height: 310px;
+  }
+  .match-panel .practice-overlay strong {
+    font-size: 22px;
+  }
+  .match-source {
+    font-size: 8px;
+  }
+}

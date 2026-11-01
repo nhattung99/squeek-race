@@ -1,5 +1,21 @@
 # QA record — 2026-10-31
 
+## Arcade practice follow-up — 2026-11-01
+
+Added independent three-lane arcade practice with countdown, steering, obstacles, energy and boost. Removed the practice timer's dependency on `document.hidden` so embedded browser visibility flags cannot freeze an explicitly started race. Added distance-driven scrolling lane markings, a running pose, status and progress meter. Practice never writes ranked scores.
+
+Validation: 33 unit/database tests pass; lint and strict TypeScript pass. Two targeted browser tests verify movement over time, scrolling road markings, steering, boost, mobile width, reset, and completion at 600 simulated metres even with `document.hidden` forced true. The completion test ran for approximately 29 seconds.
+
+## Main race follow-up — 2026-11-01
+
+Implemented Squeek Grand Prix with server countdown, one human and two labeled AI racers, server-timed controls and simulation, collisions, energy/boost, finish classification, persistent result receipts and a separate server race board. The client cannot supply rank, distance, points or finish time. See `RACING.md` for rules, trust limits and persistence.
+
+The first end-to-end test caught dropped rapid left/boost combinations; a bounded serial control queue now preserves these commands while respecting server spacing. A complete actual-time browser match subsequently passed in approximately 37 seconds, including forged-result rejection, a three-racer result, mobile layout, stable receipt on repeated reads and restored results after reload. Screenshots: `main-race-mobile.png` and `main-race-results.png`. The recorded QA human finished third; no winning result was fabricated.
+
+Unit/database coverage now includes the main race and totals 43 tests, including exact replay of persisted inputs/classification and canonical receipt verification after a PostgreSQL JSONB round-trip. Main race results do not change the verified-prediction award ledger. Cloud deployment and human multiplayer remain outside this implementation.
+
+Final main-race validation: lint and strict TypeScript pass without warnings; all 43 unit/database tests pass; production build passes; full default Playwright suite has 5 passing tests and 1 intentionally skipped opt-in hardware-prediction test. Main-race browser coverage uses actual wall-clock server time and persistent local PostgreSQL. The owner authorized publication of the main-race follow-up to GitHub on 2026-11-01. No public deployment or cloud PostgreSQL acceptance test has been performed by this agent.
+
 ## Automated coverage
 
 Vitest runs actual PostgreSQL through PGlite for persistence/integration tests, using isolated random directories under `.data/tests-*`. Synthetic records exist only in those tests. Real API snapshots in `docs/sources` are separate from synthetic fixtures and are never served as fallback live outcomes.
