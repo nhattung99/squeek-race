@@ -19,14 +19,14 @@ test("main race: real server countdown, controls, AI finish and persisted classi
     page.getByRole("button", { name: new RegExp(nickname) }),
   ).toBeVisible();
   const arena = page.getByRole("region", { name: "Server race match" });
-  await arena.getByRole("button", { name: "Bắt đầu trận đấu" }).click();
+  await arena.getByRole("button", { name: "Start race" }).click();
   await expect(
-    arena.getByText("Trận đã tạo trên server · sẵn sàng đổi làn!"),
+    arena.getByText("Match created on the server · get ready to race!"),
   ).toBeVisible();
-  await expect(arena.getByRole("button", { name: "Lái trái" })).toBeEnabled({
+  await expect(arena.getByRole("button", { name: "Steer left" })).toBeEnabled({
     timeout: 10000,
   });
-  await arena.getByRole("button", { name: "Lái trái" }).click();
+  await arena.getByRole("button", { name: "Steer left" }).click();
   await expect
     .poll(async () =>
       Number(
@@ -34,7 +34,7 @@ test("main race: real server countdown, controls, AI finish and persisted classi
       ),
     )
     .toBeGreaterThan(10000);
-  await arena.getByRole("button", { name: /Tăng tốc ·/ }).click();
+  await arena.getByRole("button", { name: /Boost ·/ }).click();
   await expect(arena.locator(".match-road")).toHaveClass(/boosting/);
   await page.setViewportSize({ width: 390, height: 844 });
   expect(

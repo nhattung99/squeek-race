@@ -375,12 +375,12 @@ export function ArenaApp({ page }: { page: string }) {
         onJoin={() => setProfileOpen(true)}
       />
       <details className="live-companion">
-        <summary>Đua tập ngoại tuyến · không lưu thành tích</summary>
+        <summary>Offline practice · results are not saved</summary>
         <PracticeRace />
       </details>
       <details className="live-companion">
         <summary>
-          Theo dõi bánh xe thật · chỉ chạy khi hamster hoạt động
+          Live wheel companion · moves only when the real hamster runs
         </summary>
         <section className="panel sprint-panel">
           <div className="section-heading">
@@ -726,7 +726,7 @@ export function ArenaApp({ page }: { page: string }) {
                 <div className="hero-buttons">
                   <Button asChild>
                     <a href="#play">
-                      <Flag size={17} /> Chơi đua ngay <ArrowRight size={17} />
+                      <Flag size={17} /> Play now <ArrowRight size={17} />
                     </a>
                   </Button>
                   <Button asChild variant="ghost">
@@ -959,15 +959,16 @@ export function ArenaApp({ page }: { page: string }) {
               <section className="panel guide-card">
                 <span>GP</span>
                 <Flag size={26} />
-                <h2>Đua chính · Grand Prix</h2>
+                <h2>Main race · Grand Prix</h2>
                 <p>
-                  Tạo hồ sơ rồi bấm Bắt đầu trận đấu. Đếm ngược 3 giây, đua với
-                  2 AI, dùng ← → hoặc A/D để né thùng và Space để tăng tốc.
-                  Server tính vị trí, thời gian về đích và lưu thứ hạng. Đây là
-                  mét ảo trong game; chưa phải multiplayer người thật.
+                  Create a racer and press Start race. After a three-second
+                  countdown, race two AI opponents. Use ← → or A/D to dodge
+                  crates and Space to boost. The server calculates positions,
+                  finish times, and saved standings. Distances are virtual game
+                  metres; this is not human multiplayer.
                 </p>
                 <Link className="text-link" href="/arena#play">
-                  Vào trận đấu <ArrowRight size={14} />
+                  Enter the race <ArrowRight size={14} />
                 </Link>
               </section>
               {[

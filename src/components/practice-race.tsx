@@ -86,16 +86,17 @@ export function PracticeRace() {
     >
       <div className="section-heading">
         <div>
-          <span className="eyebrow">CHƠI NGAY · KHÔNG CẦN CHỜ HAMSTER</span>
+          <span className="eyebrow">PLAY NOW · NO WAITING FOR THE HAMSTER</span>
           <h2>
             Arcade Sprint <Flag size={19} />
           </h2>
         </div>
-        <span className="pill violet">ĐUA TẬP</span>
+        <span className="pill violet">PRACTICE</span>
       </div>
       <p className="practice-description">
-        Bấm Đua tập ngay để xuất phát. Nhân vật tự chạy; bạn đổi làn né thùng,
-        nhặt năng lượng và tăng tốc đến đích. Không cần chờ 60 passages.
+        Press Start practice to begin. Your racer runs automatically: change
+        lanes, dodge crates, collect energy, and boost to the finish. No need to
+        wait for 60 passages.
       </p>
       <div className="practice-hud">
         <span>
@@ -116,9 +117,9 @@ export function PracticeRace() {
         <div className="practice-running-status">
           {race.status === "racing"
             ? race.boost > 0
-              ? "⚡ ĐANG TĂNG TỐC"
-              : "ĐANG CHẠY · ← → ĐỔI LÀN"
-            : "ĐƯỜNG ĐUA TẬP"}
+              ? "⚡ BOOSTING"
+              : "RUNNING · ← → CHANGE LANES"
+            : "PRACTICE TRACK"}
         </div>
         {race.status === "racing" &&
           course
@@ -154,35 +155,36 @@ export function PracticeRace() {
             <Hamster color="orange" />
           </div>
         </div>
-        <span className="practice-finish">🏁 600 m ảo</span>
+        <span className="practice-finish">🏁 600 virtual m</span>
         {(race.status !== "racing" || countdown !== null) && (
           <div className="practice-overlay" role="status">
             {countdown !== null ? (
               <strong className="practice-countdown">{countdown}</strong>
             ) : race.status === "won" ? (
               <>
-                <strong>VỀ ĐÍCH! 🏆</strong>
+                <strong>FINISH! 🏆</strong>
                 <span>
-                  {race.elapsed.toFixed(1)} giây · {race.collected} năng lượng
+                  {race.elapsed.toFixed(1)} seconds · {race.collected} energy
+                  pickups
                 </span>
                 <Button onClick={start}>
                   <RotateCcw size={15} />
-                  Đua lại
+                  Race again
                 </Button>
               </>
             ) : race.status === "lost" ? (
               <>
-                <strong>Thử lại nhé!</strong>
-                <span>Dùng ← → để tránh thùng trên đường.</span>
-                <Button onClick={start}>Đua lại</Button>
+                <strong>Give it another try!</strong>
+                <span>Use ← → to dodge the crates.</span>
+                <Button onClick={start}>Race again</Button>
               </>
             ) : (
               <>
-                <strong>Sẵn sàng xuất phát?</strong>
-                <span>← → / A D đổi làn · Space tăng tốc</span>
+                <strong>Ready to race?</strong>
+                <span>← → / A D to steer · Space to boost</span>
                 <Button onClick={start}>
                   <Flag size={16} />
-                  Đua tập ngay
+                  Start practice
                 </Button>
               </>
             )}
@@ -191,7 +193,7 @@ export function PracticeRace() {
       </div>
       <progress
         className="practice-progress"
-        aria-label="Tiến độ đua tập"
+        aria-label="Practice race progress"
         value={race.distance}
         max={600}
       />
@@ -200,7 +202,7 @@ export function PracticeRace() {
           variant="outline"
           onClick={() => steer(-1)}
           disabled={race.status !== "racing"}
-          aria-label="Đổi làn trái"
+          aria-label="Change lane left"
         >
           <ArrowLeft size={20} />
         </Button>
@@ -211,20 +213,20 @@ export function PracticeRace() {
           }
         >
           <Zap size={17} />
-          Tăng tốc
+          Boost
         </Button>
         <Button
           variant="outline"
           onClick={() => steer(1)}
           disabled={race.status !== "racing"}
-          aria-label="Đổi làn phải"
+          aria-label="Change lane right"
         >
           <ArrowRight size={20} />
         </Button>
       </div>
       <p className="fine-print">
-        Đường đua mô phỏng, chạy bằng điều khiển của bạn. Không phải dữ liệu
-        hamster thật; không cộng điểm leaderboard hoặc thay đổi dự đoán.
+        A simulated race controlled by you. This is not real hamster activity.
+        Practice does not award leaderboard points or change predictions.
       </p>
       {race.status === "racing" && (
         <button
@@ -234,7 +236,7 @@ export function PracticeRace() {
             setRace(initialArcade());
           }}
         >
-          Dừng đua tập
+          Stop practice
         </button>
       )}
     </section>

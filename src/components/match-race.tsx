@@ -38,7 +38,7 @@ async function call(body?: unknown, id?: string): Promise<ResponseData> {
   );
   const data = await response.json();
   if (!response.ok)
-    throw new Error(data.error ?? "Không kết nối được server trận đấu");
+    throw new Error(data.error ?? "Could not connect to the race server");
   return data;
 }
 export function MatchRace({
@@ -89,7 +89,9 @@ export function MatchRace({
         })
         .catch(() => {
           if (live)
-            setError("Chưa kết nối được server. Bấm thử lại trước khi đua.");
+            setError(
+              "Race server unavailable. Retry the connection before starting.",
+            );
         });
     }, 0);
     return () => {
@@ -117,7 +119,7 @@ export function MatchRace({
         .catch(() => {
           if (active)
             setError(
-              "Mất kết nối tạm thời. Server vẫn giữ trận đấu; đang kết nối lại…",
+              "Connection interrupted. Your match is saved on the server. Reconnecting…",
             );
         })
         .finally(() => {
@@ -142,7 +144,7 @@ export function MatchRace({
       if (generation.current === epoch) accept(data);
       track.current?.focus();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Không tạo được trận");
+      setError(e instanceof Error ? e.message : "Could not create the match");
     } finally {
       setBusy(false);
     }
@@ -176,7 +178,7 @@ export function MatchRace({
           setError("");
         } catch (e) {
           setError(
-            e instanceof Error ? e.message : "Không gửi được điều khiển",
+            e instanceof Error ? e.message : "Could not send the control input",
           );
           try {
             accept(await call(undefined, value.id));
@@ -199,7 +201,7 @@ export function MatchRace({
   const actors = match?.riders ?? [
     {
       id: "player",
-      name: player?.nickname ?? "Bạn",
+      name: player?.nickname ?? "You",
       ai: false,
       avatar: player?.avatar ?? 0,
       lane: 1,
@@ -237,9 +239,7 @@ export function MatchRace({
     >
       <div className="section-heading">
         <div>
-          <span className="eyebrow">
-            TRẬN ĐẤU CHÍNH · SERVER ĐIỀU KHIỂN KẾT QUẢ
-          </span>
+          <span className="eyebrow">MAIN RACE · SERVER-VERIFIED RESULTS</span>
           <h2>
             Squeek Grand Prix <Flag size={20} />
           </h2>
@@ -250,25 +250,25 @@ export function MatchRace({
         </span>
       </div>
       <p className="practice-description">
-        Bạn đua với <strong>2 đối thủ AI</strong>. Đổi làn né thùng, nhặt năng
-        lượng và tăng tốc. Về đích nhanh nhất để giành hạng 1!
+        Race against <strong>2 AI opponents</strong>. Change lanes, dodge
+        crates, collect energy, and boost your way to first place!
       </p>
       <div className="match-source">
         <Zap size={13} />
         {match?.wheel.available
-          ? `Năng lượng bánh xe tại xuất phát: ${match.wheel.active ? "đang hoạt động · hồi 7%/giây" : "đang nghỉ · hồi 5%/giây"}`
-          : "Bản đồ mô phỏng · dùng mức năng lượng chuẩn khi chưa có dữ liệu thật"}
+          ? `Wheel energy at the start: ${match.wheel.active ? "active · regenerating 7%/second" : "resting · regenerating 5%/second"}`
+          : "Simulated track · standard energy until verified wheel data is available"}
       </div>
       <div className="match-hud">
         <span>
-          HẠNG <strong data-testid="match-rank">{human?.rank ?? "—"}/3</strong>
+          PLACE <strong data-testid="match-rank">{human?.rank ?? "—"}/3</strong>
         </span>
         <span>
           <Zap size={15} />
           {Math.floor((human?.energy ?? 10000) / 100)}%
         </span>
         <span data-testid="match-distance" data-distance={humanDistance}>
-          {Math.floor(humanDistance / 1000)} / 1000 m ảo
+          {Math.floor(humanDistance / 1000)} / 1000 virtual m
         </span>
         <span>{((match?.tick ?? 0) * 0.05).toFixed(1)}s</span>
       </div>
@@ -276,7 +276,7 @@ export function MatchRace({
         {actors.map((r) => (
           <div key={r.id} className={!r.ai ? "your-position" : ""}>
             <span>
-              {r.rank}. {r.ai ? `${r.name} · AI` : "BẠN"}
+              {r.rank}. {r.ai ? `${r.name} · AI` : "YOU"}
             </span>
             <div className="match-progress-rail">
               <span style={{ width: `${(r.distance / RACE_LENGTH) * 100}%` }} />
@@ -306,9 +306,7 @@ export function MatchRace({
           style={{ backgroundPositionY: `${humanDistance / 200}px` }}
         />
         <div className="practice-running-status">
-          {racing
-            ? "ĐANG ĐUA · ← → ĐỔI LÀN · SPACE TĂNG TỐC"
-            : "SQUEEK GRAND PRIX"}
+          {racing ? "RACING · ← → STEER · SPACE TO BOOST" : "SQUEEK GRAND PRIX"}
         </div>
         {racing &&
           course
@@ -342,7 +340,7 @@ export function MatchRace({
                 transform: `translateX(-50%) translateY(${racing ? Math.sin((match?.tick ?? 0) * 0.65 + (r.ai ? 1 : 0)) * 3 : 0}px)`,
               }}
             >
-              <span>{r.ai ? `${r.name} · AI` : "BẠN"}</span>
+              <span>{r.ai ? `${r.name} · AI` : "YOU"}</span>
               <Hamster color={["orange", "violet", "cyan", "pink"][r.avatar]} />
             </div>
           ))}
@@ -353,40 +351,38 @@ export function MatchRace({
           <div className="practice-overlay" role="status">
             {!match ? (
               <>
-                <strong>Đua cùng 2 đối thủ AI</strong>
-                <span>
-                  Xuất phát → điều khiển → về đích → server xác nhận thứ hạng
-                </span>
+                <strong>Race against 2 AI opponents</strong>
+                <span>Start → steer → finish → server-confirmed standings</span>
                 <Button onClick={start} disabled={busy}>
                   <Flag size={17} />
                   {busy
-                    ? "Đang tạo trận…"
+                    ? "Creating match…"
                     : player
-                      ? "Bắt đầu trận đấu"
-                      : "Tạo racer để thi đấu"}
+                      ? "Start race"
+                      : "Create a racer to compete"}
                 </Button>
               </>
             ) : match.status === "countdown" ? (
               <>
                 <strong className="practice-countdown">{count || "GO!"}</strong>
-                <span>Trận đã tạo trên server · sẵn sàng đổi làn!</span>
+                <span>Match created on the server · get ready to race!</span>
               </>
             ) : match.status === "finished" ? (
               <>
                 <Trophy size={30} />
-                <strong>VỀ ĐÍCH · HẠNG {human?.rank}/3</strong>
+                <strong>FINISHED · PLACE {human?.rank}/3</strong>
                 <span>
-                  <ShieldCheck size={14} /> Kết quả đã được server xác nhận và
-                  lưu
+                  <ShieldCheck size={14} /> Result confirmed and saved by the
+                  server
                 </span>
                 <Button onClick={start} disabled={busy}>
-                  Đua trận mới
+                  Race again
                 </Button>
               </>
             ) : (
               <>
-                <strong>Bạn đã về đích!</strong>
-                <span>Server đang chờ các đối thủ AI hoàn thành…</span>
+                <strong>You crossed the finish line!</strong>
+                <span>Waiting for the AI racers to finish…</span>
               </>
             )}
           </div>
@@ -395,7 +391,7 @@ export function MatchRace({
       <div className="practice-controls">
         <Button
           variant="outline"
-          aria-label="Lái trái"
+          aria-label="Steer left"
           onClick={() => void control("left")}
           disabled={!racing}
         >
@@ -406,11 +402,11 @@ export function MatchRace({
           disabled={!racing || (human?.energy ?? 0) < 3500 || !!human?.boost}
         >
           <Zap size={18} />
-          Tăng tốc · 35%
+          Boost · 35%
         </Button>
         <Button
           variant="outline"
-          aria-label="Lái phải"
+          aria-label="Steer right"
           onClick={() => void control("right")}
           disabled={!racing}
         >
@@ -427,37 +423,39 @@ export function MatchRace({
                   accept(data);
                   setError("");
                 })
-                .catch(() => setError("Chưa kết nối được server. Thử lại sau."))
+                .catch(() =>
+                  setError("Server unavailable. Please try again later."),
+                )
             }
           >
-            Thử lại kết nối
+            Retry connection
           </button>
         </div>
       )}
       {match?.status === "finished" && (
         <div className="match-result" data-testid="confirmed-race-result">
           <h3>
-            <ShieldCheck size={18} /> Bảng kết quả chính thức của trận
+            <ShieldCheck size={18} /> Server-confirmed race results
           </h3>
           {match.riders.map((r) => (
             <div key={r.id}>
               <strong>
-                #{r.rank} {r.name} {r.ai ? "(AI)" : "(Bạn)"}
+                #{r.rank} {r.name} {r.ai ? "(AI)" : "(You)"}
               </strong>
               <span>
                 {r.finishMs !== null ? (r.finishMs / 1000).toFixed(3) : "—"}s ·{" "}
-                {r.hits} va chạm
+                {r.hits} collisions
               </span>
             </div>
           ))}
           <details>
             <summary>
-              <LockKeyhole size={12} /> Mã xác nhận & luật tái lập
+              <LockKeyhole size={12} /> Result receipt & reproducible rules
             </summary>
             <p>
               Match: {match.id}
               <br />
-              Luật: {match.version}
+              Rules: {match.version}
               <br />
               SHA-256: {match.resultDigest}
             </p>
@@ -466,7 +464,7 @@ export function MatchRace({
       )}
       <div className="match-board">
         <h3>
-          <Trophy size={17} /> Bảng thành tích đua · server lưu
+          <Trophy size={17} /> Race leaderboard · server records
         </h3>
         {board.length ? (
           board.slice(0, 5).map((entry, index) => (
@@ -475,19 +473,19 @@ export function MatchRace({
                 {index + 1}. {entry.nickname}
               </span>
               <strong>
-                Hạng {entry.rank}/3 · {(entry.finish_ms / 1000).toFixed(2)}s
+                Place {entry.rank}/3 · {(entry.finish_ms / 1000).toFixed(2)}s
               </strong>
             </div>
           ))
         ) : (
-          <p>Hoàn thành trận đầu tiên để ghi thành tích.</p>
+          <p>Finish your first race to record a result.</p>
         )}
       </div>
       <p className="fine-print">
-        Đối thủ là AI mô phỏng, chưa phải multiplayer. Server nhận điều khiển và
-        tính toàn bộ quãng đường, va chạm, thời gian và thứ hạng. Thành tích đua
-        tách khỏi điểm dự đoán dữ liệu thật. Không có cược hay phần thưởng
-        tiền/token.
+        Opponents are simulated AI, not human multiplayer. The server processes
+        controls and calculates distance, collisions, finish times, and
+        standings. Race results are separate from verified prediction points. No
+        wagering, cash, or token rewards.
       </p>
     </section>
   );

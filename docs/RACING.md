@@ -4,7 +4,7 @@ The main playable race is at `/#play` and `/arena`: a human racer against **two 
 
 ## Play
 
-Create a server profile, press **Bắt đầu trận đấu**, wait for the three-second server countdown, then use Left/Right or A/D to change lanes and Space to boost. Touch buttons provide the same inputs. The race is 1,000 **virtual game metres**, not physical measured wheel distance. Avoid crates: each collision cancels boost and slows the racer for 1.5 seconds. Energy pickups restore 20%; boost costs 35% and lasts two seconds. There is no client-written score or finish time.
+Create a server profile, press **Start race**, wait for the three-second server countdown, then use Left/Right or A/D to change lanes and Space to boost. Touch buttons provide the same inputs. The race is 1,000 **virtual game metres**, not physical measured wheel distance. Avoid crates: each collision cancels boost and slows the racer for 1.5 seconds. Energy pickups restore 20%; boost costs 35% and lasts two seconds. There is no client-written score or finish time.
 
 Three competitor progress lanes remain visible above the interactive road. Live positions are provisional; the server confirms the final classification once all three racers finish. The result includes all times, collisions, a match ID and a retained receipt digest. Reloading restores the latest server match, including its completed result. A disconnected racer continues using the last accepted lane; refreshing later advances the deterministic simulation to server time. No browser tab must stay open for simulated time to exist.
 
