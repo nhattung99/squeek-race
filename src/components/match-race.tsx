@@ -87,10 +87,12 @@ export function MatchRace({
         .then((data) => {
           if (live && generation.current === epoch) accept(data);
         })
-        .catch(() => {
+        .catch((error: unknown) => {
           if (live)
             setError(
-              "Race server unavailable. Retry the connection before starting.",
+              error instanceof Error
+                ? error.message
+                : "Race server unavailable. Retry the connection before starting.",
             );
         });
     }, 0);
@@ -423,8 +425,12 @@ export function MatchRace({
                   accept(data);
                   setError("");
                 })
-                .catch(() =>
-                  setError("Server unavailable. Please try again later."),
+                .catch((error: unknown) =>
+                  setError(
+                    error instanceof Error
+                      ? error.message
+                      : "Server unavailable. Please try again later.",
+                  ),
                 )
             }
           >

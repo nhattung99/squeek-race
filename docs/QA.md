@@ -1,5 +1,11 @@
 # QA record — 2026-10-31
 
+## Production Origin and database diagnostics — 2026-11-01
+
+Production feedback showed `Invalid request origin` and a separate race API error. Origin validation now normalizes configured origins and accepts only exact current-project domains from trusted Vercel system variables, plus explicitly configured custom origins. It does not trust arbitrary Host headers or all `*.vercel.app` domains. Nine security regression cases cover canonical/deployment/branch origins, custom configuration, malformed/missing/foreign origins, spoofed hosts, production fail-closed behavior and local loopback.
+
+`GET /api/health` reports only coarse database readiness: `DATABASE_URL_MISSING`, `DATABASE_UNAVAILABLE`, or connected. Missing PostgreSQL configuration produces an actionable 503 response instead of a generic error, and the race screen preserves the sanitized setup message. No connection string or credentials are returned. Tests: 57 unit/database tests, lint and TypeScript pass; 3 browser tests pass including same-origin registration, malicious-origin rejection and an actual-time match with persisted results. A cloud database connection has not been verified; the owner still needs to configure the Vercel Production variables and redeploy.
+
 ## Vercel build-output fix — 2026-11-01
 
 The first cloud build exposed a phase-dependent output mismatch: the local production path was `.next-production` while the Vercel adapter expected `.next`. Vercel now uses `.next` in every config-loading phase. Five regression tests verify stable output across production/development/test on Vercel and preservation of separate local output behavior. A local build with `VERCEL=1` completed successfully and produced `.next/BUILD_ID` with `required-server-files.json.config.distDir` equal to `.next`. Remote deployment success still requires the next Vercel build; it is not inferred from this local check.

@@ -35,7 +35,7 @@ Set these environment variables:
 | Variable | Requirement |
 |---|---|
 | `DATABASE_URL` | Required on Vercel. Pooled PostgreSQL connection URL; never client-visible. |
-| `APP_ORIGIN` | Required for production mutations, exactly the canonical HTTPS URL. Preview deployments need their exact preview origin. |
+| `APP_ORIGIN` | Recommended canonical HTTPS origin; required when trusted Vercel system domain variables are unavailable or a custom alias is not listed there. |
 | `CRON_SECRET` | Random secret of at least 32 characters; used by authenticated ingestion GET. |
 | `TRUST_PROXY` | Keep false unless a trusted ingress overwrites `X-Forwarded-For`; then true. |
 
@@ -72,5 +72,9 @@ A minute schedule can take longer to catch up the initial history than active br
 9. Review the included MIT license for original code/art, publish only intended files, check for secrets and proprietary downloaded documentation, then request approval before GitHub push or public deployment.
 
 ## Recovery
+
+**Invalid request origin:** set `APP_ORIGIN=https://squeek-race.vercel.app` for this project's production domain (or its actual replacement). The validator also accepts the exact deployment, branch and production domains supplied by Vercel system environment variables. It does not accept arbitrary `*.vercel.app` sites or trust a caller-supplied Host in production. Whitespace/trailing slash in configuration are normalized; foreign, missing or malformed Origin headers are rejected. Local development accepts exact loopback origins only.
+
+**Server unavailable:** open `/api/health`. `DATABASE_URL_MISSING` means PostgreSQL has not been configured for this deployment. `DATABASE_UNAVAILABLE` means the connection/credentials/permissions need checking. Set secrets in Vercel's Production environment and redeploy; never paste a database connection string in chat or public logs. The health response contains no credentials.
 
 Unavailability: wait and retry at the documented cadence; existing predictions stay pending. Invalid cursor: inspect the upstream error, installation and retained coverage before an audited reset. Installation drift or changed segment: `feed.halted` persists and all settled prediction rounds become disputed; points are excluded without deleting awards. Clearing the halt is an operator database procedure, not an unauthenticated API action. Take a backup, verify a complete replacement evidence set, recompute affected outcomes/streaks in order, record the repair in `audit`, and only then resume. A permanent incomplete round must be resolved explicitly; it blocks later chronological settlement.

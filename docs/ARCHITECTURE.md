@@ -44,7 +44,7 @@ Invalid/missing data leaves predictions pending. Detected correction or installa
 
 ## Security and operations limitations
 
-Strict request bodies reject client-supplied score fields. Cookies are HttpOnly, SameSite Strict and Secure in production, expiring after 90 days; profile lookup enforces absolute expiry. Production requires an exact `APP_ORIGIN`. Mutating routes reject missing/mismatched origins. Body size is checked before JSON parsing after read and by Content-Length; the hosting proxy should also enforce a hard transport body limit.
+Strict request bodies reject client-supplied score fields. Cookies are HttpOnly, SameSite Strict and Secure in production, expiring after 90 days; profile lookup enforces absolute expiry. Production accepts the configured canonical `APP_ORIGIN` and exact project domains from trusted Vercel system environment variables. It never trusts arbitrary caller Host headers or wildcard Vercel tenants. Mutating routes reject missing/mismatched origins. Body size is checked before JSON parsing after read and by Content-Length; the hosting proxy should also enforce a hard transport body limit.
 
 Trusted forwarded IP handling is off by default. Enable only behind a proxy that overwrites that header; otherwise all registrations share conservative local limits. Token secrecy is the anonymous authentication mechanism: no wallet signatures, seed phrases or private keys exist. Cookie theft and Sybil accounts remain risks; do not attach financial rewards.
 

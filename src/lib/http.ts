@@ -1,18 +1,16 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { playerFor, rateLimit } from "./game";
+import { assertRequestOrigin } from "./origin";
 export async function currentPlayer() {
   return playerFor((await cookies()).get("arena_session")?.value);
 }
 export function checkOrigin(request: NextRequest) {
-  const origin = request.headers.get("origin");
-  const expected =
-    process.env.APP_ORIGIN ??
-    (process.env.NODE_ENV !== "production"
-      ? `http://${request.headers.get("host")}`
-      : null);
-  if (!expected || origin !== expected)
-    throw new Error("Invalid request origin");
+  assertRequestOrigin(
+    request.headers.get("origin"),
+    request.headers.get("host"),
+    process.env,
+  );
 }
 export async function readBody(request: NextRequest) {
   if (Number(request.headers.get("content-length") ?? 0) > 2048)
@@ -40,6 +38,14 @@ export async function limitRequest(
 }
 export function failure(e: unknown) {
   const message = e instanceof Error ? e.message : "Request failed";
+  if (message === "DATABASE_URL is required on Vercel")
+    return NextResponse.json(
+      {
+        error:
+          "Server setup incomplete: connect PostgreSQL and set DATABASE_URL in Vercel.",
+      },
+      { status: 503 },
+    );
   const publicPrefixes = [
     "Invalid request origin",
     "Request too large",
