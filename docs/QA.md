@@ -1,5 +1,9 @@
 # QA record — 2026-10-31
 
+## Vercel build-output fix — 2026-11-01
+
+The first cloud build exposed a phase-dependent output mismatch: the local production path was `.next-production` while the Vercel adapter expected `.next`. Vercel now uses `.next` in every config-loading phase. Five regression tests verify stable output across production/development/test on Vercel and preservation of separate local output behavior. A local build with `VERCEL=1` completed successfully and produced `.next/BUILD_ID` with `required-server-files.json.config.distDir` equal to `.next`. Remote deployment success still requires the next Vercel build; it is not inferred from this local check.
+
 ## Arcade practice follow-up — 2026-11-01
 
 Added independent three-lane arcade practice with countdown, steering, obstacles, energy and boost. Removed the practice timer's dependency on `document.hidden` so embedded browser visibility flags cannot freeze an explicitly started race. Added distance-driven scrolling lane markings, a running pose, status and progress meter. Practice never writes ranked scores.

@@ -24,7 +24,7 @@ Open `http://127.0.0.1:3000`. Default development accepts same-origin browser re
 
 Persistent local PostgreSQL lives at `.data/postgres`. Do not run a second process against the same PGlite directory. The integration suite uses separate randomly named test directories. Back up a stopped local database directory rather than copying a live database during writes.
 
-The development server uses `.next`; production builds use `.next-production`, allowing QA to run without output-directory collisions. Production uses `next build --webpack`, avoiding a reproducible Turbopack CSS worker failure on this Windows host. Vercel automatically detects the output from Next's config.
+Local development uses `.next`; local production builds use `.next-production`, allowing QA to run without output-directory collisions. On Vercel (`VERCEL` is set), every phase uses `.next` regardless of `NODE_ENV`, matching the hosting adapter's expected output. Keep Vercel's Output Directory at the default `.next`; do not override it to `.next-production`. Production uses `next build --webpack`, avoiding a reproducible Turbopack CSS worker failure on this Windows host.
 
 ## PostgreSQL and Vercel
 

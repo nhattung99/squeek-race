@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 const config: NextConfig = {
-  distDir: process.env.NODE_ENV === "production" ? ".next-production" : ".next",
+  // Vercel inspects this config outside the production build phase too.
+  // Keep its output path stable across NODE_ENV values.
+  distDir: process.env.VERCEL
+    ? ".next"
+    : process.env.NODE_ENV === "production"
+      ? ".next-production"
+      : ".next",
   serverExternalPackages: ["@electric-sql/pglite", "postgres"],
   async headers() {
     return [
