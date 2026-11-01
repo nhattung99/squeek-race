@@ -62,6 +62,7 @@ type CacheEntry = { data: unknown; etag: string | null; until: number };
 const cache = new Map<string, CacheEntry>();
 const pending = new Map<string, Promise<unknown>>();
 let blockedUntil = 0;
+const deniedUntil = new Map<string, number>();
 export async function apiGet<T>(
   path: string,
   schema: z.ZodType<T>,
@@ -69,6 +70,11 @@ export async function apiGet<T>(
 ): Promise<T> {
   const prior = cache.get(path);
   if (prior && prior.until > Date.now()) return schema.parse(prior.data);
+  const endpoint = path.split("?")[0];
+  if ((deniedUntil.get(endpoint) ?? 0) > Date.now())
+    throw new Error(
+      "Squeekchain HTTP 403: server access denied; retry deferred.",
+    );
   if (blockedUntil > Date.now())
     throw new Error(
       "Squeekchain is rate limited. Please wait before retrying.",
@@ -98,6 +104,7 @@ export async function apiGet<T>(
           1000;
       throw new Error("Source busy; retry later.");
     }
+    if (response.status === 403) deniedUntil.set(endpoint, Date.now() + 60000);
     if (!response.ok) throw new Error(`Squeekchain HTTP ${response.status}`);
     const raw: unknown = await response.json();
     if (
@@ -124,6 +131,9 @@ export async function apiGet<T>(
 }
 export async function getWheel() {
   const data = await apiGet("/status", statusSchema, 5000);
+  return wheelWithFreshness(data);
+}
+export function wheelWithFreshness(data: WheelStatus, now = Date.now()) {
   const m = data.measurement;
   return {
     ...data,
@@ -132,8 +142,9 @@ export async function getWheel() {
       m.freshness === "online" &&
       m.provenance === "hardware" &&
       m.coreStatus !== "COUNTER_FAULT" &&
-      Date.now() - Date.parse(m.receivedAt) <= m.staleAfterSeconds * 1000 &&
-      Date.now() - Date.parse(m.observedAt) <= m.staleAfterSeconds * 1000 &&
-      Date.parse(m.receivedAt) <= Date.now() + 5000,
+      now - Date.parse(m.receivedAt) <= m.staleAfterSeconds * 1000 &&
+      now - Date.parse(m.observedAt) <= m.staleAfterSeconds * 1000 &&
+      Date.parse(m.receivedAt) <= now + 5000 &&
+      Date.parse(m.observedAt) <= now + 5000,
   };
 }

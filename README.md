@@ -33,6 +33,8 @@ Correct future predictions earn 100 points. Every third consecutive correct pred
 
 ## Integrity and scope
 
+If the official source returns HTTP 403 to Vercel, public CORS telemetry can be read directly for display only. It never supplies scores or race outcomes. Trusted prediction ingestion still requires permitted server access. An owner-only collector (`npm run source:sync -- --watch`) can run the same ingestion pipeline on a permitted trusted host against the shared PostgreSQL database; it has not been provisioned or launched automatically. See [source access and recovery](docs/SOURCE_ACCESS.md).
+
 - Predictions lock using server time, transaction serialization and a unique `(player, round)` constraint.
 - Outcomes require complete API hardware coverage, eligible provenance, no discontinuity inside the interval, and unique passage timestamps. Scoring waits two minutes after the interval.
 - Sources, retrieval times, segment IDs, SHA-256 digests, frozen ranges and rule version are retained. Awards are idempotent.

@@ -1,5 +1,11 @@
 # QA record — 2026-10-31
 
+## Source refusal resilience — 2026-11-01
+
+Verified the official status and run endpoints return HTTP 200 with wildcard public CORS from the development network while deployed server requests reported HTTP 403. Added schema/freshness-validated browser telemetry strictly for display, clearly separated from server-only outcomes. Forbidden server endpoints back off for 60 seconds and use a persistent explanatory notice. No browser measurement upload or fake result path exists.
+
+Validation: 61 unit/database tests pass, including direct-read credentials/schema/freshness checks and endpoint refusal backoff. Three targeted browser tests pass, including a clearly mocked 403 scenario that proves display fallback labeling and absence of repeated error toasts. That scenario does not claim a production source recovery. The optional trusted collector reuses the existing ingestion/scoring pipeline, requires the shared production PostgreSQL secret, and has not been run against the owner's database. Prediction recovery still requires permitted trusted server access or an owner-operated collector.
+
 ## Production Origin and database diagnostics — 2026-11-01
 
 Production feedback showed `Invalid request origin` and a separate race API error. Origin validation now normalizes configured origins and accepts only exact current-project domains from trusted Vercel system variables, plus explicitly configured custom origins. It does not trust arbitrary Host headers or all `*.vercel.app` domains. Nine security regression cases cover canonical/deployment/branch origins, custom configuration, malformed/missing/foreign origins, spoofed hosts, production fail-closed behavior and local loopback.

@@ -8,7 +8,8 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint .",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "source:sync": "tsx scripts/sync-source.ts"
   },
   "keywords": [],
   "author": "",

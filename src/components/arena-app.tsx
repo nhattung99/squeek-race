@@ -34,6 +34,7 @@ import { Hamster } from "./hamster";
 import { RoundReplay } from "./round-replay";
 import { PracticeRace } from "./practice-race";
 import { MatchRace } from "./match-race";
+import { useDirectWheel } from "./use-direct-wheel";
 import { integer, milli } from "@/lib/utils";
 import type { gameState } from "@/lib/game";
 import type { Choice, Thresholds } from "@/lib/rules";
@@ -130,6 +131,8 @@ export function ArenaApp({ page }: { page: string }) {
     null,
   );
   const [replay, setReplay] = useState<string | null>(null);
+  const [syncDenied, setSyncDenied] = useState(false);
+  const directWheel = useDirectWheel(!!state && !state.wheel?.fresh);
   const syncBusy = useRef(false);
   const clockOffset = useRef(0);
   const seenResults = useRef(new Map<string, boolean | null>());
@@ -160,9 +163,12 @@ export function ArenaApp({ page }: { page: string }) {
     syncBusy.current = true;
     try {
       await request("/api/sync", {});
+      setSyncDenied(false);
       await refresh();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Feed unavailable");
+      const message = e instanceof Error ? e.message : "Feed unavailable";
+      if (message.includes("Squeekchain HTTP 403")) setSyncDenied(true);
+      else setError(message);
     } finally {
       syncBusy.current = false;
     }
@@ -191,8 +197,18 @@ export function ArenaApp({ page }: { page: string }) {
     const timer = setTimeout(() => setNotice(""), 5000);
     return () => clearTimeout(timer);
   }, [notice]);
-  const measurement = state?.wheel?.measurement;
-  const fresh = !!state?.wheel?.fresh;
+  const displayWheel = state?.wheel?.fresh ? state.wheel : directWheel;
+  const measurement = displayWheel?.measurement;
+  const fresh =
+    !!displayWheel?.fresh &&
+    !!measurement &&
+    now - Date.parse(measurement.receivedAt) <=
+      measurement.staleAfterSeconds * 1000 &&
+    now - Date.parse(measurement.observedAt) <=
+      measurement.staleAfterSeconds * 1000;
+  const browserDisplay = !!directWheel && !state?.wheel?.fresh;
+  const sourceDenied =
+    syncDenied || !!state?.sourceError?.includes("Squeekchain HTTP 403");
   const round = state?.rounds
     .filter((r) => r.status === "open" && Number(r.locks_at) > now)
     .sort((a, b) => Number(a.starts_at) - Number(b.starts_at))[0];
@@ -848,6 +864,21 @@ export function ArenaApp({ page }: { page: string }) {
                 <RotateCcw size={16} />
               </button>
             </div>
+            {(sourceDenied || browserDisplay) && (
+              <div className="source-notice" role="status">
+                <Info size={16} />
+                <span>
+                  {browserDisplay && fresh
+                    ? "Live wheel telemetry is read directly from the official public API for display only. "
+                    : "Trusted server telemetry is unavailable or stale. "}
+                  {feedReady
+                    ? "Predictions use trusted server history only, never browser readings. "
+                    : "Predictions are paused until trusted server history catches up. "}
+                  Grand Prix remains playable with its disclosed server energy
+                  settings.
+                </span>
+              </div>
+            )}
           </>
         )}
         {page === "" && (

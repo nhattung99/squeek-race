@@ -3222,3 +3222,20 @@ footer a:hover {
     font-size: 8px;
   }
 }
+.source-notice {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  padding: 13px 16px;
+  margin: 14px 0 0;
+  border: 1px solid #695a3f;
+  border-radius: 9px;
+  background: #b9842510;
+  color: #c1b79e;
+  font-size: 10px;
+  line-height: 1.7;
+}
+.source-notice > svg {
+  color: #d5b57a;
+  margin-top: 2px;
+}
