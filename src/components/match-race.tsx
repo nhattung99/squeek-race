@@ -13,6 +13,7 @@ import type { MatchView } from "@/lib/races";
 import { raceCourse, RACE_LENGTH, type RaceAction } from "@/lib/race-engine";
 import { Hamster } from "./hamster";
 import { Button } from "./ui/button";
+import { RaceInteraction } from "./race-interaction";
 type BoardEntry = {
   match_id: string;
   nickname: string;
@@ -198,6 +199,39 @@ export function MatchRace({
   );
   const human = match?.riders.find((r) => !r.ai);
   const racing = match?.status === "racing" && human?.finishMs === null;
+  useEffect(() => {
+    if (!racing) return;
+    const handleKey = (event: KeyboardEvent) => {
+      const target = event.target;
+      if (
+        event.defaultPrevented ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey ||
+        (target instanceof HTMLElement &&
+          (target.isContentEditable ||
+            target.closest("input, textarea, select, [role='dialog']")))
+      )
+        return;
+      const key = event.key.toLowerCase();
+      const action =
+        key === "arrowleft" || key === "a"
+          ? "left"
+          : key === "arrowright" || key === "d"
+            ? "right"
+            : key === " " &&
+                !(target instanceof HTMLElement && target.closest("button, a"))
+              ? "boost"
+              : null;
+      if (!action) return;
+      event.preventDefault();
+      if (event.repeat && (action === "boost" || queuedInputs.current > 0))
+        return;
+      void control(action);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [control, racing]);
   const course = match ? raceCourse(match.seed) : [];
   const humanDistance = human?.distance ?? 0;
   const actors = match?.riders ?? [
@@ -222,22 +256,6 @@ export function MatchRace({
       tabIndex={0}
       ref={track}
       aria-label="Server race match"
-      onKeyDown={(e) => {
-        if (e.target instanceof HTMLInputElement) return;
-        if (
-          ["ArrowLeft", "a", "A", "ArrowRight", "d", "D", " "].includes(e.key)
-        ) {
-          e.preventDefault();
-          if (e.repeat) return;
-          void control(
-            e.key === " "
-              ? "boost"
-              : ["ArrowLeft", "a", "A"].includes(e.key)
-                ? "left"
-                : "right",
-          );
-        }
-      }}
     >
       <div className="section-heading">
         <div>
@@ -390,7 +408,10 @@ export function MatchRace({
           </div>
         )}
       </div>
-      <div className="practice-controls">
+      {match?.status === "finished" && (
+        <RaceInteraction key={match.id} id={match.id} />
+      )}
+      <div className="practice-controls match-controls">
         <Button
           variant="outline"
           aria-label="Steer left"
@@ -398,6 +419,7 @@ export function MatchRace({
           disabled={!racing}
         >
           <ArrowLeft size={22} />
+          Left
         </Button>
         <Button
           onClick={() => void control("boost")}
@@ -413,8 +435,13 @@ export function MatchRace({
           disabled={!racing}
         >
           <ArrowRight size={22} />
+          Right
         </Button>
       </div>
+      <p className="fine-print">
+        Tap Left or Right, or use ← / → or A / D. Hold a direction to cross two
+        lanes. Press Space to boost.
+      </p>
       {error && (
         <div className="match-error" role="alert">
           {error}

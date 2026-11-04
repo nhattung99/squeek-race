@@ -87,6 +87,8 @@ The production build uses Next.js's supported Webpack option because this Window
 
 ## Deployment and attribution
 
+Optional first-place **Sepolia victory receipts** are implemented behind operator configuration. See [on-chain win setup and trust model](docs/ONCHAIN_WINS.md). They require a separately deployed custom registry and isolated attestation service; neither has been deployed by this task. The wallet sends a zero-value record transaction after simulation, and pays testnet gas. There are no SQK rewards. Run `npm run contracts:compile` to build the reviewed contract artifact locally.
+
 Read [deployment](docs/DEPLOYMENT.md), [architecture](docs/ARCHITECTURE.md), [rules](docs/GAME_RULES.md), [API integration](docs/API_INTEGRATION.md), [demo](docs/DEMO.md), [QA](docs/QA.md) and [Genesis submission](docs/GENESIS_SUBMISSION.md).
 
 This version was developed in Codex. **Codex code alone does not establish IMD attribution.** Source publication to [the owner's GitHub repository](https://github.com/nhattung99/squeek-race) is authorized. No IMD job, payment, verified job-owner attribution, badge approval or public deployment has been created by this agent. The official skill installed successfully under `.agents/skills/squeekchain`; it is excluded from source publication because its documentation is proprietary. Its guidance was read during this session; a new Codex turn can discover the installed skill.

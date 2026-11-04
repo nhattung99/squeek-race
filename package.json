@@ -9,7 +9,9 @@
     "start": "next start",
     "lint": "eslint .",
     "test:e2e": "playwright test",
-    "source:sync": "tsx scripts/sync-source.ts"
+    "source:sync": "tsx scripts/sync-source.ts",
+    "contracts:compile": "tsx scripts/compile-wins.ts",
+    "wins:signer": "tsx scripts/win-signer.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +19,7 @@
   "type": "module",
   "dependencies": {
     "@electric-sql/pglite": "^0.5.13",
+    "@openzeppelin/contracts": "^5.6.1",
     "@radix-ui/react-slot": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -28,9 +31,14 @@
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "tailwind-merge": "^3.7.0",
+    "viem": "^2.57.14",
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@ethereumjs/block": "^10.1.3",
+    "@ethereumjs/common": "^10.1.3",
+    "@ethereumjs/util": "^10.1.3",
+    "@ethereumjs/vm": "^10.1.3",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.6",
@@ -39,6 +47,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.3",
     "prettier": "^3.9.10",
+    "solc": "^0.8.38",
     "tailwindcss": "^4.3.3",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3",
@@ -46,7 +55,8 @@
   },
   "private": true,
   "overrides": {
-    "minimatch": "^11.0.1"
+    "minimatch": "^11.0.1",
+    "tmp": "^0.2.7"
   },
   "engines": {
     "node": "24.x"

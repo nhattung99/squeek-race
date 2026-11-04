@@ -1,5 +1,13 @@
 # QA record — 2026-10-31
 
+## Optional victory receipts — 2026-11-02
+
+68 unit/database/EVM tests pass across 12 files. The actual Solidity source is compiled and executed in an isolated Sepolia-configured EVM; duplicates, forged/modified/expired vouchers, wrong callers, domain/chain replay, ETH transfers and mainnet deployment are rejected. Isolated database tests verify session ownership, first place, wallet proof, immutable binding, verified signer responses, simulation, code/network pins and exact canonical receipt checks.
+
+Two new Playwright tests pass using explicitly mocked wallets/RPC/results: undeployed configuration disables recording, cancellation preserves results, the mobile receipt panel fits at 390px, and the happy path sends one zero-value `recordWin` call with no token approval before confirmation. `docs/screenshots/win-receipt-mobile.png` is a synthetic UI fixture showing the undeployed state, not evidence of a public win or transaction. The existing 68-test count includes seven new contract/server tests; browser tests are additional.
+
+Full dependency audits report zero advisories after the compiler's temporary-file dependency was patched. No real attestor secret, public signing service, deployed custom registry or public transaction has been created or tested. Local tests do not establish production readiness, IMD attribution or Genesis approval. Setup and trust limits: `ONCHAIN_WINS.md`.
+
 ## Source refusal resilience — 2026-11-01
 
 Verified the official status and run endpoints return HTTP 200 with wildcard public CORS from the development network while deployed server requests reported HTTP 403. Added schema/freshness-validated browser telemetry strictly for display, clearly separated from server-only outcomes. Forbidden server endpoints back off for 60 seconds and use a persistent explanatory notice. No browser measurement upload or fake result path exists.

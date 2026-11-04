@@ -66,6 +66,7 @@ export function failure(e: unknown) {
     "Unverified hardware",
     "Invalid round",
     "Race ",
+    "Win ",
   ];
   const safe = publicPrefixes.some((prefix) => message.startsWith(prefix))
     ? message

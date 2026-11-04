@@ -18,6 +18,7 @@ jobs:
       - run: npx next typegen
       - run: npx tsc --noEmit
       - run: npm run test
+      - run: npm run contracts:compile
       - run: npm run build
       - run: npm audit --omit=dev
       - run: npx playwright install --with-deps chromium

@@ -41,6 +41,10 @@ These are API-verified hardware measurement outcomes, **not** certified Core set
 
 ## Architecture
 
+Every completed Grand Prix offers an optional zero-value Sepolia transaction to the game's verified registry. The call queries the match key; the server stores the race result and rank in PostgreSQL. The wallet interaction does not create an IMD job or establish attribution. See [deployment configuration](DEPLOYMENT.md).
+
+The custom registry is deployed on Sepolia and separate from Squeekchain's official contracts. The repository also retains the first-place attestation API and its local signer reference. Public Grand Prix uses the post-race lookup interaction described above. See `ONCHAIN_WINS.md` for the separate receipt protocol.
+
 Next.js App Router, strict TypeScript, Tailwind, shadcn-style Radix/CVA primitives, Motion, Lucide, Zod, Drizzle and PostgreSQL. Development uses persistent PGlite; Vercel requires external PostgreSQL. Server-clock locks, unique prediction constraints, serialized transactions, immutable source records, an idempotent award ledger, session cookies, Origin validation and rate limiting enforce the game rules. Anonymous profiles are not fully Sybil-resistant. See `ARCHITECTURE.md`, `GAME_RULES.md`, `API_INTEGRATION.md`, `QA.md` and `DEPLOYMENT.md`.
 
 ## Attribution — current status

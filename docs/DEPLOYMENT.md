@@ -1,5 +1,16 @@
 # Deployment guide
 
+To enable the **Interact on Sepolia** button after any Grand Prix finish, set `WIN_REGISTRY_ADDRESS` and `WIN_REGISTRY_CODE_HASH` in Vercel Production and redeploy. The current verified Sepolia deployment is:
+
+```env
+WIN_REGISTRY_ADDRESS=0xadbedad3e4fa8dfaee1a5d40c4f820a77adffdba
+WIN_REGISTRY_CODE_HASH=0x0030039fbfdc24f9f2425f0e5d0f75768294e8c4697e8ddc1bf53c980756fd0d
+```
+
+This post-race interaction uses the player's wallet and the public Sepolia RPC. It calls the registry's match lookup with zero ETH value and does not need the local signing service or a private key on Vercel. Keep `DATABASE_URL` configured for the game's race results.
+
+Optional Sepolia victory recording also requires a reviewed custom registry, pinned runtime hash and a separately hosted attestation service. Leave the feature unconfigured until those are ready. See [on-chain wins](ONCHAIN_WINS.md); adding the UI does not deploy its contract.
+
 Source publication to https://github.com/nhattung99/squeek-race is authorized by the owner. No public deployment, paid service or cloud database has been created by this agent. The repository is prepared for Next.js on Vercel with external PostgreSQL.
 
 ## Vercel dashboard quickstart

@@ -2,6 +2,7 @@ node_modules/
 .next/
 .next-production/
 .data/
+artifacts/
 .env*
 !.env.example
 playwright-report/

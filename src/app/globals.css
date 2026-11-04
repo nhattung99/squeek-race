@@ -2920,6 +2920,11 @@ footer a:hover {
   flex: 1;
   touch-action: manipulation;
 }
+.match-controls .button {
+  min-height: 56px;
+  gap: 6px;
+  padding-inline: 8px;
+}
 .practice-reset {
   display: block;
   background: transparent;
